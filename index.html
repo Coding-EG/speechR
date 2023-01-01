@@ -31,9 +31,7 @@ let ftranscript="";
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
         ftranscript+= event.results[i][0].transcript;
-       }else{
-	      transcriptDiv.innerText += event.results[i][0].transcript;
-	   }
+       }
 	   
     }
     // get the transcript of the spoken words
