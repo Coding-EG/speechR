@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<button id="start-stop">Start</button>
+
+<div id="transcript"></div>
+
+<script>
+    // check if the browser supports the Web Speech API
+if ('speechSynthesis' in window) {
+  // get the start/stop button and transcript div
+  const startStopButton = document.getElementById('start-stop');
+  const transcriptDiv = document.getElementById('transcript');
+
+  // create a new SpeechRecognition object
+  const recognition =new webkitSpeechRecognition();
+  recognition.continuous = true;
+//recognition.lang = 'en-IN';
+recognition.maxAlternatives = 1;
+recognition.interimResults = true;
+let ftranscript="";
+  // define a function to handle the onresult event
+  recognition.onresult = (event) => {
+	  
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        ftranscript+= event.results[i][0].transcript;
+       }else{
+	      transcriptDiv.innerText += event.results[i][0].transcript;
+	   }
+	   
+    }
+    // get the transcript of the spoken words
+    const transcript = event.results[0][0].transcript;
+
+    // update the transcript div with the transcript
+    
+   transcriptDiv.innerText =ftranscript;
+    //  console.log(ftranscript);
+    //console.log()
+
+    // stop listening for speech
+    //recognition.stop();
+    
+  };
+
+  // define a function to handle the onerror event
+  recognition.onerror = (event) => {
+    console.error(event.error);
+  };
+  recognition.onend = (event) => {
+	   recognition.stop();
+      startStopButton.textContent = 'start';
+    console.error("ended");
+  };
+
+  // add a click event listener to the start/stop button
+  startStopButton.onclick = () => {
+    
+    // check if the recognition is currently listening
+    if (startStopButton.innerText == "stop") {
+      // if it is, stop listening
+      recognition.stop();
+      startStopButton.textContent = 'start';
+    } else {
+      // if it isn't, start listening
+      recognition.start();
+      startStopButton.textContent = 'stop';
+    }
+  };
+  recognition.addEventListener('audiostart', () => {
+  console.log('Audio capturing started');
+});
+recognition.addEventListener('audioend', () => {
+  console.log('Audio capturing ended');
+});
+recognition.addEventListener('soundstart', () => {
+  console.log('Some sound is being received');
+});
+recognition.onspeechstart = () => {
+  console.log('Speech has been detected');
+}
+recognition.onspeechend = () => {
+  console.log('Speech has been not detected');
+}
+} else {
+  // if the browser does not support the Web Speech API, display an error message
+  console.error('Your browser does not support the Web Speech API');
+}
+
+</script>
+</body>
+</html>
