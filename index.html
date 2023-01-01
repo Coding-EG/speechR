@@ -30,7 +30,7 @@ let ftranscript="";
 	  
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
-        ftranscript+= event.results[i][0].transcript;
+        ftranscript= event.results[i][0].transcript;
        }
 	   
     }
@@ -39,7 +39,7 @@ let ftranscript="";
 
     // update the transcript div with the transcript
     
-   transcriptDiv.innerText +=transcript;
+   transcriptDiv.innerText +=ftranscript;
     //  console.log(ftranscript);
     //console.log()
 
